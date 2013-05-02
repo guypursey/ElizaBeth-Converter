@@ -14,7 +14,7 @@ html, body {
 .area {
 	width: 50%;
 	height: 100%;
-	border: 1px solid #000;
+	/* border: 1px solid #000; */
 	margin: 0;
 	padding: 0;
 	display: inline-block;
@@ -25,15 +25,26 @@ html, body {
 .header {
 	width: 100%;
 	height: 10%;
-	border-bottom: 1px dashed #666;
+	/* border-bottom: 1px dashed #666; */
 	margin: 0;
 	padding: 0;
+	font: 2em "Georgia";
 }
 .content {
 	width: 100%;
 	height: 90%;
 	margin: 0;
 	padding: 0;
+}
+#convert {
+	float: right;
+	border: 1px solid #666;
+	height: 100%;
+	font: 100% "Georgia";
+	cursor: pointer;
+}
+#convert:hover {
+	background-color: #aaa;
 }
 </style>
 <script>
@@ -113,15 +124,13 @@ window.onload = function () {
 		<span>Input</span>
 		<span id="convert">Convert >></span>
 		</div>
-		<textarea class="content" id="input">
-		</textarea>
+		<textarea class="content" id="input"></textarea>
 	</div>
 	<div class="area">
 		<div class="header">
 		<span>Output</span>
 		</div>
-		<textarea class="content" id="output">
-		</textarea>
+		<textarea class="content" id="output" readonly="readonly"></textarea>
 	</div>
 </body>
 </html>
