@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+<head>
+<style type="text/css">
+* {
+	box-sizing: border-box;
+}
+html, body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+.area {
+	width: 50%;
+	height: 100%;
+	border: 1px solid #000;
+	margin: 0;
+	padding: 0;
+	display: inline-block;
+	vertical-align: top;		/* http://stackoverflow.com/questions/5683461/why-is-box-not-aligned-properly */
+	overflow: hidden;
+	float: left;
+}
+.header {
+	width: 100%;
+	height: 10%;
+	border-bottom: 1px dashed #666;
+	margin: 0;
+	padding: 0;
+}
+.content {
+	width: 100%;
+	height: 90%;
+	margin: 0;
+	padding: 0;
+}
+</style>
+<script>
+
+window.onload = function () {
+	
+	
+	function convertArr (arr) {
+		var superrtn = [],
+			rtn = [],
+			len = arr.length,
+			setlen,
+			parseResults = function () {
+				var resArr = [],
+					rlen = arr[len][2][setlen][1].length;
+				while (rlen) {
+					rlen -= 1;
+					resArr.unshift({
+						"respond": arr[len][2][setlen][1][rlen],
+						"ranking": arr[len][1],
+						"tagging": [ "generic" ]
+					});
+				}
+				return resArr;
+			};
+		
+		superrtn[0] = {
+			"pattern": "*",
+			"ranking": 0
+		}
+		
+		while (len) {
+			len -= 1;
+			console.log(len);
+			if (arr[len][0] === "xnone") {
+				superrtn[0].ranking = arr[len][1];
+				superrtn[0].results = parseResults();
+			} else {
+				rtn.unshift({});
+				rtn[0].pattern = " " + arr[len][0] + " "; // check for duplicates?
+				//rtn[0].ranking = arr[len][1];
+				rtn[0].ruleset = [];
+				setlen = arr[len][2].length;
+				while (setlen) {
+					setlen -= 1;
+					if (arr[len][2][setlen][0] === "*") {
+						rtn[0].results = parseResults();
+					} else {
+						rtn[0].ruleset.unshift({});
+						rtn[0].ruleset[0].pattern = " " + arr[len][2][setlen][0] + " ";
+						rtn[0].ruleset[0].results = parseResults();
+					}
+				}
+			} 
+		}
+		
+		superrtn[0].ruleset = rtn;
+		
+		return superrtn;
+	}
+
+	
+	document.getElementById('input').contentEditable = true;
+	
+	document.getElementById('convert').onclick = function () {
+		//console.log(document.getElementById('input').innerHTML);
+		var results = convertArr(JSON.parse(document.getElementById('input').value));
+		document.getElementById('output').innerHTML = JSON.stringify(results, null, '\t');
+	}
+};
+
+</script>
+</head>
+<body>
+	<div class="area">
+		<div class="header">
+		<span>Input</span>
+		<span id="convert">Convert >></span>
+		</div>
+		<textarea class="content" id="input">
+		</textarea>
+	</div>
+	<div class="area">
+		<div class="header">
+		<span>Output</span>
+		</div>
+		<textarea class="content" id="output">
+		</textarea>
+	</div>
+</body>
+</html>
