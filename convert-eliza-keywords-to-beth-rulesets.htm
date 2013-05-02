@@ -42,6 +42,7 @@ html, body {
 	height: 100%;
 	font: 100% "Georgia";
 	cursor: pointer;
+	display: none;
 }
 #convert:hover {
 	background-color: #aaa;
@@ -105,15 +106,26 @@ window.onload = function () {
 		
 		return superrtn;
 	}
-
 	
-	document.getElementById('input').contentEditable = true;
 	
-	document.getElementById('convert').onclick = function () {
-		//console.log(document.getElementById('input').innerHTML);
-		var results = convertArr(JSON.parse(document.getElementById('input').value));
+	var convertButton = document.getElementById('convert'),
+		inputArea = document.getElementById('input'),
+		activateConvertButton = function () {
+			if (!this.value) {
+				convertButton.style.display = "none";
+			} else {
+				convertButton.style.display = "block";
+			}
+		}
+	
+	convertButton.onclick = function () {
+		var results = convertArr(JSON.parse(inputArea.value));
 		document.getElementById('output').innerHTML = JSON.stringify(results, null, '\t');
-	}
+	};
+	
+	inputArea.contentEditable = true;
+	inputArea.oninput = activateConvertButton;
+	
 };
 
 </script>
