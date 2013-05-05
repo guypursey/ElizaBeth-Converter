@@ -47,6 +47,12 @@ html, body {
 #convert:hover {
 	background-color: #aaa;
 }
+textarea, pre {
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	-webkit-tab-size: 4;
+	tab-size: 4;
+}
 </style>
 <script>
 
@@ -66,7 +72,9 @@ window.onload = function () {
 					resArr.unshift({
 						"respond": arr[len][2][setlen][1][rlen],
 						"ranking": arr[len][1],
-						"tagging": [ "generic" ]
+						"tagging": [ "generic" ],
+						"comment": "",
+						"storage": ""
 					});
 				}
 				return resArr;
@@ -74,7 +82,8 @@ window.onload = function () {
 		
 		superrtn[0] = {
 			"pattern": "*",
-			"ranking": 0
+			"ranking": 0,
+			"comment": "Top-level. Will match anything the user inputs."
 		}
 		
 		while (len) {
@@ -97,6 +106,7 @@ window.onload = function () {
 						rtn[0].ruleset.unshift({});
 						rtn[0].ruleset[0].pattern = " " + arr[len][2][setlen][0] + " ";
 						rtn[0].ruleset[0].results = parseResults();
+						rtn[0].ruleset[0].comment = "";
 					}
 				}
 			} 
@@ -125,6 +135,7 @@ window.onload = function () {
 	
 	inputArea.contentEditable = true;
 	inputArea.oninput = activateConvertButton;
+	inputArea.focus();
 	
 };
 
