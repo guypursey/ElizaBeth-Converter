@@ -100,7 +100,7 @@ window.onload = function () {
 				setlen = arr[len][2].length;
 				while (setlen) {
 					setlen -= 1;
-					if (arr[len][2][setlen][0] === "*" || arr[len][2][setlen][0] === arr[len][0]) {
+					if (arr[len][2][setlen][0] === arr[len][0]) {
 						rtn[0].results = parseResults();
 					} else {
 						rtn[0].ruleset.unshift({});
