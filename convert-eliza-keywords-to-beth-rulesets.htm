@@ -60,8 +60,8 @@ window.onload = function () {
 	
 	
 	function convertArr (arr) {
-		var superrtn = [],
-			rtn = [],
+		var superrtn = {},
+			rtn = {},
 			len = arr.length,
 			setlen,
 			parseResults = function () {
@@ -80,7 +80,7 @@ window.onload = function () {
 				return resArr;
 			};
 		
-		superrtn[0] = {
+		superrtn["*"] = {
 			"pattern": "*",
 			"ranking": 0,
 			"comment": "Top-level. Will match anything the user inputs."
@@ -90,29 +90,29 @@ window.onload = function () {
 			len -= 1;
 			console.log(len);
 			if (arr[len][0] === "xnone") {
-				superrtn[0].ranking = arr[len][1];
-				superrtn[0].results = parseResults();
+				superrtn["*"].ranking = arr[len][1];
+				superrtn["*"].results = parseResults();
 			} else {
-				rtn.unshift({});
-				rtn[0].pattern = " " + arr[len][0] + " "; // check for duplicates?
+				rtn[arr[len][0]]={};
+				rtn[arr[len][0]].pattern = " " + arr[len][0] + " "; // check for duplicates?
 				//rtn[0].ranking = arr[len][1];
-				rtn[0].ruleset = [];
+				rtn[arr[len][0]].ruleset = {};
 				setlen = arr[len][2].length;
 				while (setlen) {
 					setlen -= 1;
 					if (arr[len][2][setlen][0] === "*" || arr[len][2][setlen][0] === arr[len][0]) {
-						rtn[0].results = parseResults();
+						rtn[arr[len][0]].results = parseResults();
 					} else {
-						rtn[0].ruleset.unshift({});
-						rtn[0].ruleset[0].pattern = " " + arr[len][2][setlen][0] + " ";
-						rtn[0].ruleset[0].results = parseResults();
-						rtn[0].ruleset[0].comment = "";
+						rtn[arr[len][0]].ruleset[arr[len][2][setlen][0]] = {};
+						rtn[arr[len][0]].ruleset[arr[len][2][setlen][0]].pattern = " " + arr[len][2][setlen][0] + " ";
+						rtn[arr[len][0]].ruleset[arr[len][2][setlen][0]].results = parseResults();
+						rtn[arr[len][0]].ruleset[arr[len][2][setlen][0]].comment = "";
 					}
 				}
 			} 
 		}
 		
-		superrtn[0].ruleset = rtn;
+		superrtn["*"].ruleset = rtn;
 		
 		return superrtn;
 	}
