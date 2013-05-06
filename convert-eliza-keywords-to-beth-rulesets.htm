@@ -63,6 +63,7 @@ window.onload = function () {
 		var superrtn = {},
 			rtn = {},
 			len = arr.length,
+			label,
 			setlen,
 			parseResults = function () {
 				var resArr = [],
@@ -88,25 +89,24 @@ window.onload = function () {
 		
 		while (len) {
 			len -= 1;
-			console.log(len);
-			if (arr[len][0] === "xnone") {
+			label = arr[len][0];
+			if (label === "xnone") {
 				superrtn["*"].ranking = arr[len][1];
 				superrtn["*"].results = parseResults();
 			} else {
-				rtn[arr[len][0]]={};
-				rtn[arr[len][0]].pattern = " " + arr[len][0] + " "; // check for duplicates?
-				//rtn[0].ranking = arr[len][1];
-				rtn[arr[len][0]].ruleset = {};
+				rtn[label]={};
+				rtn[label].pattern = label;
+				rtn[label].ruleset = {};
 				setlen = arr[len][2].length;
 				while (setlen) {
 					setlen -= 1;
-					if (arr[len][2][setlen][0] === "*" || arr[len][2][setlen][0] === arr[len][0]) {
-						rtn[arr[len][0]].results = parseResults();
+					if (arr[len][2][setlen][0] === "*" || arr[len][2][setlen][0] === label) {
+						rtn[label].results = parseResults();
 					} else {
-						rtn[arr[len][0]].ruleset[arr[len][2][setlen][0]] = {};
-						rtn[arr[len][0]].ruleset[arr[len][2][setlen][0]].pattern = " " + arr[len][2][setlen][0] + " ";
-						rtn[arr[len][0]].ruleset[arr[len][2][setlen][0]].results = parseResults();
-						rtn[arr[len][0]].ruleset[arr[len][2][setlen][0]].comment = "";
+						rtn[label].ruleset[arr[len][2][setlen][0]] = {};
+						rtn[label].ruleset[arr[len][2][setlen][0]].pattern = " " + arr[len][2][setlen][0] + " ";
+						rtn[label].ruleset[arr[len][2][setlen][0]].results = parseResults();
+						rtn[label].ruleset[arr[len][2][setlen][0]].comment = "";
 					}
 				}
 			} 
