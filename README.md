@@ -1,8 +1,8 @@
 #ELIZA TO BETH CONVERTER #
 
-##v0.0.1##
+##v0.0.2##
 
-LATEST: Fixed a problem with some substitutions ending up undefined (#3).
+LATEST: Restored ruleset-as-object structure that was lost in the previous merge conflict.
 This is very much a work in progress.
 
 #WHAT IS THIS?#
