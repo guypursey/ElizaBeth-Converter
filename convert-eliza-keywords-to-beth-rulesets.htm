@@ -60,10 +60,9 @@ window.onload = function () {
 	
 	
 	function convertArr (arr) {
-		var superrtn = {},
-			rtn = {},
+		var superrtn = [],
+			rtn = [],
 			len = arr.length,
-			label,
 			setlen,
 			parseResults = function () {
 				var resArr = [],
@@ -73,15 +72,13 @@ window.onload = function () {
 					resArr.unshift({
 						"respond": arr[len][2][setlen][1][rlen],
 						"ranking": arr[len][1],
-						"tagging": [ "generic" ]
-						//"comment": "",
-						//"storage": ""
+						"tagging": [ "generic" ],
 					});
 				}
 				return resArr;
 			};
 		
-		superrtn["*"] = {
+		superrtn[0] = {
 			"pattern": "*",
 			"ranking": 0,
 			"comment": "Top-level. Will match anything the user inputs."
@@ -89,30 +86,31 @@ window.onload = function () {
 		
 		while (len) {
 			len -= 1;
-			label = arr[len][0];
-			if (label === "xnone") {
-				superrtn["*"].ranking = arr[len][1];
-				superrtn["*"].results = parseResults();
+			console.log(len);
+			if (arr[len][0] === "xnone") {
+				superrtn[0].ranking = arr[len][1];
+				superrtn[0].results = parseResults();
 			} else {
-				rtn[label]={};
-				rtn[label].pattern = label;
-				rtn[label].ruleset = {};
+				rtn.unshift({});
+				rtn[0].pattern = " " + arr[len][0] + " "; // check for duplicates?
+				//rtn[0].ranking = arr[len][1];
+				rtn[0].ruleset = [];
 				setlen = arr[len][2].length;
 				while (setlen) {
 					setlen -= 1;
-					if (arr[len][2][setlen][0] === "*" || arr[len][2][setlen][0] === label) {
-						rtn[label].results = parseResults();
+					if (arr[len][2][setlen][0] === arr[len][0]) {
+						rtn[0].results = parseResults();
 					} else {
-						rtn[label].ruleset[arr[len][2][setlen][0]] = {};
-						rtn[label].ruleset[arr[len][2][setlen][0]].pattern = " " + arr[len][2][setlen][0] + " ";
-						rtn[label].ruleset[arr[len][2][setlen][0]].results = parseResults();
-						rtn[label].ruleset[arr[len][2][setlen][0]].comment = "";
+						rtn[0].ruleset.unshift({});
+						rtn[0].ruleset[0].pattern = " " + arr[len][2][setlen][0] + " ";
+						rtn[0].ruleset[0].results = parseResults();
+						rtn[0].ruleset[0].comment = "";
 					}
 				}
 			} 
 		}
 		
-		superrtn["*"].ruleset = rtn;
+		superrtn[0].ruleset = rtn;
 		
 		return superrtn;
 	}
