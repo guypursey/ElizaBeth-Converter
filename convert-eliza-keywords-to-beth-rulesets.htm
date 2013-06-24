@@ -64,17 +64,22 @@ window.onload = function () {
 			rtn = {},
 			len = arr.length,
 			label,
+			memflag,
 			setlen,
 			parseResults = function () {
 				var resArr = [],
 					rlen = arr[len][2][setlen][1].length;
 				while (rlen) {
 					rlen -= 1;
+
 					resArr.unshift({
 						"respond": arr[len][2][setlen][1][rlen],
 						"ranking": arr[len][1],
 						"tagging": [ "generic" ]
 					});
+					if (memflag) {
+						resArr[0].deferto = [ [ "*" ] ];
+					}
 				}
 				return resArr;
 			};
@@ -88,23 +93,36 @@ window.onload = function () {
 		while (len) {
 			len -= 1;
 			label = arr[len][0];
+			memflag = false;
 			if (label === "xnone") {
 				superrtn["*"].ranking = arr[len][1];
 				superrtn["*"].results = parseResults();
 			} else {
+			
+
+			
 				rtn[label]={};
 				rtn[label].pattern = label;
 				rtn[label].ruleset = {};
+				
+
+				
 				setlen = arr[len][2].length;
 				while (setlen) {
 					setlen -= 1;
 					if (arr[len][2][setlen][0] === label) {
 						rtn[label].results = parseResults();
 					} else {
-						rtn[label].ruleset[arr[len][2][setlen][0]] = {};
-						rtn[label].ruleset[arr[len][2][setlen][0]].pattern = " " + arr[len][2][setlen][0] + " ";
-						rtn[label].ruleset[arr[len][2][setlen][0]].results = parseResults();
+						if (arr[len][2][setlen][0].charAt(0) === '$') {
+							arr[len][2][setlen][0] = arr[len][2][setlen][0].replace(/^\$\s*/, "");
+							memflag = true;
+						}
+						rtn[label].ruleset[arr[len][2][setlen][0]] = rtn[label].ruleset[arr[len][2][setlen][0]] || {};
+						rtn[label].ruleset[arr[len][2][setlen][0]].pattern = arr[len][2][setlen][0];
+						rtn[label].ruleset[arr[len][2][setlen][0]].results = rtn[label].ruleset[arr[len][2][setlen][0]].results || [];
+						rtn[label].ruleset[arr[len][2][setlen][0]].results = rtn[label].ruleset[arr[len][2][setlen][0]].results.concat(parseResults());
 						rtn[label].ruleset[arr[len][2][setlen][0]].comment = "";
+						
 					}
 				}
 			} 
