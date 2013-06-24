@@ -1,8 +1,9 @@
 #ELIZA TO BETH CONVERTER #
 
-##v0.0.2##
+##v0.0.3##
 
-LATEST: Restored ruleset-as-object structure that was lost in the previous merge conflict.
+LATEST: Added capability for memory dollar-signs to be converted to corresponding `deferto` properties in the results. 
+
 This is very much a work in progress.
 
 ###WHAT IS THIS?###
